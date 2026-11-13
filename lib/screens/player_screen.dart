@@ -75,6 +75,7 @@ class _PlayerScreenState extends State<PlayerScreen>
       final palette = await PaletteGenerator.fromImageProvider(
         provider,
         size: const Size(120, 120),
+        maximumColorCount: 16,
       );
       final dominant = palette.dominantColor?.color;
       if (!mounted) return;
@@ -244,24 +245,43 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: kPagePadding,
                                 ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      track.title,
-                                      style: AppText.title,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
+                                child: AnimatedSwitcher(
+                                  duration: kPage,
+                                  switchInCurve: kEnter,
+                                  switchOutCurve: kExit,
+                                  transitionBuilder: (child, anim) =>
+                                      FadeTransition(
+                                        opacity: anim,
+                                        child: SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: const Offset(0, 0.05),
+                                            end: Offset.zero,
+                                          ).animate(anim),
+                                          child: child,
+                                        ),
+                                      ),
+                                  child: KeyedSubtree(
+                                    key: ValueKey('meta_${track.id}'),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          track.title,
+                                          style: AppText.title,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: Spacing.xs + 2),
+                                        Text(
+                                          track.artist,
+                                          style: AppText.artist,
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: Spacing.xs + 2),
-                                    Text(
-                                      track.artist,
-                                      style: AppText.artist,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: Spacing.md),
@@ -419,6 +439,10 @@ class _BlobsState extends State<_Blobs> with SingleTickerProviderStateMixin {
     vsync: this,
     duration: kBlobsLoop,
   );
+  late final CurvedAnimation _curved = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeInOut,
+  );
 
   bool _reduceMotion = false;
 
@@ -435,6 +459,7 @@ class _BlobsState extends State<_Blobs> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    _curved.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -443,7 +468,7 @@ class _BlobsState extends State<_Blobs> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     if (_reduceMotion) return const _BlobLayout(t: 0);
     return AnimatedBuilder(
-      animation: CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      animation: _curved,
       builder: (context, _) => _BlobLayout(t: _controller.value),
     );
   }
@@ -476,12 +501,16 @@ class _BlobLayout extends StatelessWidget {
 
   Widget _blob(Color color, double size, Offset offset) => Transform.translate(
     offset: offset,
-    child: Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [BoxShadow(color: color, blurRadius: 90, spreadRadius: 50)],
+    child: RepaintBoundary(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(color: color, blurRadius: 90, spreadRadius: 50),
+          ],
+        ),
       ),
     ),
   );

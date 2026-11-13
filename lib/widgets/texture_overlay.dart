@@ -32,7 +32,7 @@ class _GrainPainter extends CustomPainter {
     final rng = math.Random(7);
     final paint = Paint()
       ..color = AppColors.textPrimary.withValues(alpha: opacity);
-    final count = ((size.width * size.height) / 900).round().clamp(80, 400);
+    final count = ((size.width * size.height) / 900).round().clamp(80, 300);
     for (var i = 0; i < count; i++) {
       final dx = rng.nextDouble() * size.width;
       final dy = rng.nextDouble() * size.height;

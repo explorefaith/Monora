@@ -68,7 +68,7 @@ class PlayerController extends ChangeNotifier {
   final _messages = StreamController<String>.broadcast();
   StreamSubscription<int?>? _indexSub;
 
-  Stream<ProgressSnapshot> get progressStream => Rx.combineLatest3(
+  ValueStream<ProgressSnapshot> get progressStream => Rx.combineLatest3(
     _player.positionStream,
     _player.bufferedPositionStream,
     _player.durationStream,
@@ -78,21 +78,23 @@ class PlayerController extends ChangeNotifier {
           buffered: buffered,
           duration: duration,
         ),
-  ).share();
+  ).shareValue();
 
-  Stream<PlayerSnapshot> get stateStream => Rx.combineLatest3(
-    _player.playerStateStream,
+  ValueStream<PlayerSnapshot> get stateStream => Rx.combineLatest4(
+    _player.playingStream,
+    _player.processingStateStream,
     _player.sequenceStateStream,
     _player.currentIndexStream,
-    (PlayerState state, SequenceState? seq, int? _) => PlayerSnapshot(
-      playing: state.playing,
-      processingState: state.processingState,
-      queue: _queueFromSequence(),
-      currentIndex: seq?.currentIndex ?? 0,
-      hasNext: _player.hasNext,
-      hasPrevious: _player.hasPrevious,
-    ),
-  ).share();
+    (bool playing, ProcessingState processing, SequenceState? seq, int? _) =>
+        PlayerSnapshot(
+          playing: playing,
+          processingState: processing,
+          queue: _queueFromSequence(),
+          currentIndex: seq?.currentIndex ?? 0,
+          hasNext: _player.hasNext,
+          hasPrevious: _player.hasPrevious,
+        ),
+  ).shareValue();
 
   Stream<String> get messages => _messages.stream;
 
@@ -273,7 +275,7 @@ class PlayerController extends ChangeNotifier {
     artUri: t.isLocal
         ? t.artUri
         : (t.artUrl == null ? null : Uri.tryParse(t.artUrl!)),
-    duration: t.duration,
+    duration: t.duration ?? (t.isPreview ? const Duration(seconds: 30) : null),
   );
 
   void _listen() {
@@ -284,9 +286,10 @@ class PlayerController extends ChangeNotifier {
         unawaited(_handlePlaybackError());
       },
     );
-    _indexSub = _player.currentIndexStream.listen(
-      (_) => _saveLastPlayedDebounced(),
-    );
+    _indexSub = _player.currentIndexStream.listen((_) {
+      _saveLastPlayedDebounced();
+      notifyListeners();
+    });
   }
 
   Future<void> _handlePlaybackError() async {
@@ -366,7 +369,6 @@ class PlayerController extends ChangeNotifier {
     _indexSub?.cancel();
     _saveDebounce?.cancel();
     _messages.close();
-    _player.dispose();
     super.dispose();
   }
 }

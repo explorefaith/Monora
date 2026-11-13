@@ -53,24 +53,38 @@ class MiniPlayer extends StatelessWidget {
                         ),
                         const SizedBox(width: Spacing.md),
                         Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                track.title,
-                                style: AppText.songTitle.copyWith(fontSize: 14),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                          child: AnimatedSwitcher(
+                            duration: kUi,
+                            switchInCurve: kEnter,
+                            switchOutCurve: kExit,
+                            transitionBuilder: (child, anim) =>
+                                FadeTransition(opacity: anim, child: child),
+                            child: KeyedSubtree(
+                              key: ValueKey('mini_${track.id}'),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    track.title,
+                                    style: AppText.songTitle.copyWith(
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    track.artist,
+                                    style: AppText.artist.copyWith(
+                                      fontSize: 11,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 2),
-                              Text(
-                                track.artist,
-                                style: AppText.artist.copyWith(fontSize: 11),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                         _playPause(controller, track),

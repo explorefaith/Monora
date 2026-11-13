@@ -10,7 +10,7 @@ Future<void> main() async {
     androidNotificationChannelId: 'dev.explorefaith.monora.playback',
     androidNotificationChannelName: 'Monora playback',
     androidNotificationOngoing: true,
-    androidStopForegroundOnPause: true,
+    androidStopForegroundOnPause: false,
   );
   final storage = StorageService();
   await storage.init();

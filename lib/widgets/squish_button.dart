@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:flutter/services.dart';
 
 import '../core/app_colors.dart';
 import '../core/app_text.dart';
@@ -90,7 +91,12 @@ class _SquishButtonState extends State<SquishButton>
       onTapDown: reduceMotion ? null : _down,
       onTapUp: reduceMotion ? null : (_) => _up(),
       onTapCancel: _up,
-      onTap: widget.onTap,
+      onTap: widget.onTap == null
+          ? null
+          : () {
+              HapticFeedback.selectionClick();
+              widget.onTap!();
+            },
       child: AnimatedBuilder(
         animation: _curve,
         builder: (context, child) {
@@ -184,7 +190,12 @@ class _PressableScaleState extends State<PressableScale> {
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),
-      onTap: widget.onTap,
+      onTap: widget.onTap == null
+          ? null
+          : () {
+              HapticFeedback.selectionClick();
+              widget.onTap!();
+            },
       child: AnimatedScale(
         scale: target,
         duration: kMicro,
