@@ -92,10 +92,11 @@
   }
 
   playBtn.addEventListener('click', () => {
-    const paused = phone.classList.toggle('is-playing');
-    iconPlay.classList.toggle('hidden', !paused);
-    iconPause.classList.toggle('hidden', paused);
-    playBtn.setAttribute('aria-label', paused ? 'Play' : 'Pause');
+    const nowPlaying = phone.classList.toggle('is-playing');
+    // playing → show the pause icon; paused → show the play icon
+    iconPlay.classList.toggle('hidden', nowPlaying);
+    iconPause.classList.toggle('hidden', !nowPlaying);
+    playBtn.setAttribute('aria-label', nowPlaying ? 'Pause' : 'Play');
   });
 
   // the collapse button in the mock is decorative — give it the squish only
