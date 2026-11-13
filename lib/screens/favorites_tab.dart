@@ -8,7 +8,6 @@ import '../player/player_controller.dart';
 import '../widgets/squish_button.dart';
 import '../widgets/track_tile.dart';
 
-/// Favorites tab (§3.B.3): stored locally via shared_preferences.
 class FavoritesTab extends StatelessWidget {
   const FavoritesTab({super.key});
 
@@ -35,9 +34,7 @@ class FavoritesTab extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.only(bottom: Spacing.lg),
-                    scrollCacheExtent: const ScrollCacheExtent.pixels(
-                      500,
-                    ), // §6
+                    scrollCacheExtent: const ScrollCacheExtent.pixels(500),
                     itemCount: favorites.length,
                     itemBuilder: (context, i) => TrackTile(
                       track: favorites[i],

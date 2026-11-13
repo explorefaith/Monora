@@ -10,9 +10,6 @@ String formatDuration(Duration d) {
   return '${d.inHours > 0 ? '${d.inHours}:$m' : m}:$s';
 }
 
-/// Custom thick rounded seek bar (§3.D): caramel fill, glowing thumb.
-/// Seeking happens only on drag end; position is previewed while dragging
-/// (§4). Only this bar + the time labels rebuild on position ticks (§6).
 class SeekBar extends StatefulWidget {
   const SeekBar({super.key, required this.controller});
 
@@ -142,7 +139,6 @@ class _SeekBarPainter extends CustomPainter {
       );
     }
 
-    // Caramel thumb with a soft glow (§3.D).
     final thumb = Offset(elapsed, y);
     final glow = Paint()
       ..color = AppColors.accentDeep.withValues(alpha: 0.35)

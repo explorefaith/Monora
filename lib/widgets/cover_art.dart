@@ -6,8 +6,6 @@ import 'package:material_ui/material_ui.dart';
 import '../core/app_colors.dart';
 import '../models/track.dart';
 
-/// Cover art for any track (§1): local artwork file, network cover, or a
-/// cream music-note fallback. Never throws on missing art.
 class CoverArt extends StatelessWidget {
   const CoverArt({super.key, this.track, this.size = 56, this.radius = 16});
 
@@ -36,7 +34,7 @@ class CoverArt extends StatelessWidget {
           width: size,
           height: size,
           fit: BoxFit.cover,
-          memCacheWidth: (size * dpr).round(), // §6
+          memCacheWidth: (size * dpr).round(),
           fadeInDuration: const Duration(milliseconds: 150),
           placeholder: (_, _) => _shimmerFallback(),
           errorWidget: (_, _, _) => _fallback(),

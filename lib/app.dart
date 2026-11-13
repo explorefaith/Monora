@@ -11,8 +11,6 @@ import 'services/storage_service.dart';
 class MonoraApp extends StatelessWidget {
   const MonoraApp({super.key, required this.storage});
 
-  /// Initialized in main() before runApp so the player controller can load
-  /// favorites / last-played synchronously.
   final StorageService storage;
 
   @override
@@ -26,7 +24,7 @@ class MonoraApp extends StatelessWidget {
           create: (context) => PlayerController(
             storage: context.read<StorageService>(),
             deezer: context.read<DeezerService>(),
-          )..initAudioSession(), // unawaited; failures are logged inside
+          )..initAudioSession(),
         ),
       ],
       child: MaterialApp(

@@ -3,8 +3,6 @@ import 'package:material_ui/material_ui.dart';
 import '../core/app_colors.dart';
 import '../core/constants.dart';
 
-/// Cream shimmer skeleton shown while Discover loads (§3.B). Hand-rolled
-/// with a moving gradient — no shimmer dependency.
 class ShimmerList extends StatefulWidget {
   const ShimmerList({super.key, this.itemCount = 8});
 

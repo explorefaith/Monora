@@ -1,5 +1,3 @@
-/// One shared model for every playable song — local or online (§1).
-/// The UI and [PlayerController] never care where a track came from.
 class Track {
   const Track({
     required this.id,
@@ -14,29 +12,21 @@ class Track {
     this.duration,
   });
 
-  /// Stable identity across queue, favorites and persistence.
   final String id;
   final String title;
   final String artist;
 
-  /// Playable location: a local file path or an https URL
-  /// (30s preview for Deezer tracks).
   final String uri;
 
-  /// Network cover art (Deezer album covers).
   final String? artUrl;
 
-  /// Local artwork file URI for the lock screen / notification (§4).
   final Uri? artUri;
 
-  /// on_audio_query song id, for local tracks only.
   final int? localId;
   final bool isLocal;
 
-  /// True for Deezer tracks — their uri is a 30s preview.
   final bool isPreview;
 
-  /// Known duration (local files); online previews resolve on load.
   final Duration? duration;
 
   Track copyWith({String? uri, Uri? artUri, Duration? duration}) => Track(

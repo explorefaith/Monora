@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/track.dart';
 
-/// Snapshot of what was playing, for restore-on-launch (§4).
 class LastPlayed {
   const LastPlayed({
     required this.queue,
@@ -17,8 +16,6 @@ class LastPlayed {
   final Duration position;
 }
 
-/// Local persistence — favorites + last played via shared_preferences (§1).
-/// [init] must complete before any other method is used; main() awaits it.
 class StorageService {
   static const String _favoritesKey = 'monora.favorites.v1';
   static const String _lastPlayedKey = 'monora.last_played.v1';
@@ -36,8 +33,6 @@ class StorageService {
     }
     return p;
   }
-
-  // ---- favorites (§3.B) ----
 
   List<Track> loadFavorites() {
     final raw = _p.getString(_favoritesKey);
@@ -58,8 +53,6 @@ class StorageService {
       jsonEncode(tracks.map((t) => t.toJson()).toList()),
     );
   }
-
-  // ---- last played (§4) ----
 
   LastPlayed? loadLastPlayed() {
     final raw = _p.getString(_lastPlayedKey);

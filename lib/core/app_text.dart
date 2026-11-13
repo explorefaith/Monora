@@ -2,11 +2,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'app_colors.dart';
 
-/// Typography (§2): Fraunces for headings and song titles, Plus Jakarta Sans
-/// for body, Hind Siliguri bundled as the Bangla glyph fallback.
-///
-/// Fraunces and Plus Jakarta Sans are variable fonts; weights are applied
-/// through the `wght` [FontVariation] axis.
 class AppText {
   AppText._();
 
@@ -30,8 +25,6 @@ class AppText {
     FontVariation('wght', wght),
   ];
 
-  // Scale: display 32/700, title 20/600, song title 16/600, artist 13/400,
-  // caption 11/500. Line height 1.3, letter spacing -0.2 on headings.
   static TextStyle get display => TextStyle(
     fontFamily: serif,
     fontFamilyFallback: _fallback,

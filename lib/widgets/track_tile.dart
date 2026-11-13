@@ -7,9 +7,6 @@ import '../models/track.dart';
 import 'cover_art.dart';
 import 'squish_button.dart';
 
-/// Staggered fade + slide-up reveal for list items (§6): 16px offset,
-/// 40ms stagger capped at 8 items. Honors reduce-motion by rendering
-/// immediately.
 class StaggeredReveal extends StatefulWidget {
   const StaggeredReveal({super.key, required this.index, required this.child});
 
@@ -28,8 +25,6 @@ class _StaggeredRevealState extends State<StaggeredReveal>
     value: 0,
   );
 
-  /// Stagger applies to the first 8 items only (§6); later rows render
-  /// immediately and don't replay when scrolled back into view.
   bool get _staggered => widget.index < kStaggerMaxItems;
 
   @override
@@ -75,8 +70,6 @@ class _StaggeredRevealState extends State<StaggeredReveal>
   }
 }
 
-/// Standard 72px list row (§2): 56x56 cover (radius 16), 14 gap, centered
-/// title/artist, 44x44 trailing tap target.
 class TrackTile extends StatelessWidget {
   const TrackTile({
     super.key,
@@ -93,7 +86,6 @@ class TrackTile extends StatelessWidget {
   final bool stagger;
   final VoidCallback? onTap;
 
-  /// Optional small widget before the cover (queue numbers / indicator).
   final Widget? leading;
   final Widget? trailing;
 

@@ -11,9 +11,6 @@ import '../screens/player_screen.dart';
 import 'cover_art.dart';
 import 'squish_button.dart';
 
-/// Docked above the nav bar, persists across tabs (§3.C).
-/// Swipe left/right = next/previous; tap or swipe up expands the full
-/// player with a Hero transition on the cover art.
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({super.key});
 
@@ -32,7 +29,7 @@ class MiniPlayer extends StatelessWidget {
             onTap: () => _expand(context),
             onVerticalDragEnd: (d) {
               if (d.primaryVelocity != null && d.primaryVelocity! < 0) {
-                _expand(context); // swipe up = expand (§3.C)
+                _expand(context);
               }
             },
             onHorizontalDragEnd: _onHorizontalDragEnd(context, controller),
@@ -85,8 +82,7 @@ class MiniPlayer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Thin progress line at the bottom (§3.C). Only this
-                  // rebuilds on position ticks (§6).
+
                   SizedBox(
                     height: 3,
                     child: StreamBuilder<ProgressSnapshot>(
@@ -121,9 +117,9 @@ class MiniPlayer extends StatelessWidget {
     return (details) {
       final v = details.velocity.pixelsPerSecond.dx;
       if (v < -300) {
-        controller.next(); // swipe left = next (§3.C)
+        controller.next();
       } else if (v > 300) {
-        controller.previous(); // swipe right = previous (§3.C)
+        controller.previous();
       }
     };
   }
@@ -133,8 +129,6 @@ class MiniPlayer extends StatelessWidget {
   }
 }
 
-/// Loading → caramel spinner; buffering → spinner; otherwise the animated
-/// play/pause icon (§4).
 Widget _playPause(PlayerController controller, Track track) {
   return StreamBuilder<PlayerSnapshot>(
     stream: controller.stateStream,

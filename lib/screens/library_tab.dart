@@ -18,8 +18,6 @@ import '../widgets/track_tile.dart';
 
 enum _PermState { unknown, granted, denied, permanentlyDenied }
 
-/// Library tab (§3.B.1): Songs / Albums / Artists from device storage,
-/// with the friendly cream permission explainer flow.
 class LibraryTab extends StatefulWidget {
   const LibraryTab({super.key});
 
@@ -55,8 +53,6 @@ class _LibraryTabState extends State<LibraryTab>
   }
 
   Future<void> _checkPermission() async {
-    // Permission.audio maps to READ_MEDIA_AUDIO on Android 13+ and
-    // READ_EXTERNAL_STORAGE below (§3.B.1, §5).
     final status = await Permission.audio.status;
     if (!mounted) return;
     if (status.isGranted || status.isLimited) {
@@ -133,8 +129,6 @@ class _LibraryTabState extends State<LibraryTab>
     }
   }
 
-  // ---- permission flow (§3.B.1): friendly cream explainer card ----
-
   Widget _explainer() {
     final permanentlyDenied = _perm == _PermState.permanentlyDenied;
     return SafeArea(
@@ -190,8 +184,6 @@ class _LibraryTabState extends State<LibraryTab>
       ),
     );
   }
-
-  // ---- library (permission granted) ----
 
   Widget _library() {
     return SafeArea(
@@ -272,7 +264,7 @@ class _LibraryTabState extends State<LibraryTab>
       onRefresh: _loadLibrary,
       child: ListView.builder(
         padding: const EdgeInsets.only(bottom: Spacing.lg),
-        scrollCacheExtent: const ScrollCacheExtent.pixels(500), // §6
+        scrollCacheExtent: const ScrollCacheExtent.pixels(500),
         itemCount: songs.length,
         itemBuilder: (context, i) =>
             TrackTile(track: songs[i], index: i, onTap: () => _play(songs, i)),
@@ -386,9 +378,6 @@ class _LibraryTabState extends State<LibraryTab>
   );
 }
 
-// ---- small shared pieces ----
-
-/// Entity cover loaded as raw bytes (on_audio_query returns no URI here).
 class _EntityCover extends StatelessWidget {
   const _EntityCover({required this.id, required this.type});
 
@@ -416,7 +405,6 @@ class _EntityCover extends StatelessWidget {
   }
 }
 
-/// 72px row for albums/artists that mirrors [TrackTile]'s layout (§2).
 class _EntityRow extends StatelessWidget {
   const _EntityRow({
     required this.index,
@@ -532,7 +520,6 @@ class _AlbumCard extends StatelessWidget {
   }
 }
 
-/// Album / artist detail: full-screen list of that entity's tracks.
 class _EntityDetailScreen extends StatelessWidget {
   const _EntityDetailScreen({
     required this.title,
@@ -550,7 +537,7 @@ class _EntityDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final future = load(); // computed once per screen instance
+    final future = load();
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(

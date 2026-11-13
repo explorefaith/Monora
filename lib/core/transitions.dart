@@ -2,9 +2,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'constants.dart';
 
-/// Fade-through page transition (§6) — never the default Android slide.
-/// Outgoing page fades out on the first 30%, incoming fades in and drifts
-/// up 16px on the rest.
 class FadeThroughRoute<T> extends PageRouteBuilder<T> {
   FadeThroughRoute({required Widget page, super.settings})
     : super(
@@ -37,9 +34,6 @@ class FadeThroughRoute<T> extends PageRouteBuilder<T> {
       );
 }
 
-/// Sheet-expand transition for mini → full player (§6): rises like a sheet.
-/// [controller] is exposed publicly so [PlayerScreen] can drive
-/// drag-to-dismiss directly on this route's animation.
 class SheetUpRoute<T> extends PageRouteBuilder<T> {
   SheetUpRoute({required Widget page, super.settings})
     : super(

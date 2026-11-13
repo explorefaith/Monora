@@ -13,8 +13,6 @@ import '../widgets/track_tile.dart';
 
 enum _Status { loading, ready, error, offline, empty }
 
-/// Discover tab (§3.B.2): online chips [Bengali, Hindi, English, Trending],
-/// pull-to-refresh, shimmer skeleton, error with Retry, offline state.
 class DiscoverTab extends StatefulWidget {
   const DiscoverTab({super.key});
 
@@ -23,7 +21,6 @@ class DiscoverTab extends StatefulWidget {
 }
 
 class _DiscoverTabState extends State<DiscoverTab> {
-  /// Chip order per spec (§3.B.2).
   static const _chips = ['Bengali', 'Hindi', 'English', kTrendingChip];
 
   String _selected = 'Bengali';
@@ -169,7 +166,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
       case _Status.ready:
         return ListView.builder(
           padding: const EdgeInsets.only(top: Spacing.xs, bottom: Spacing.lg),
-          scrollCacheExtent: const ScrollCacheExtent.pixels(500), // §6
+          scrollCacheExtent: const ScrollCacheExtent.pixels(500),
           itemCount: _tracks.length,
           itemBuilder: (context, i) =>
               TrackTile(track: _tracks[i], index: i, onTap: () => _play(i)),

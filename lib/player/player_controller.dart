@@ -10,8 +10,6 @@ import '../models/track.dart';
 import '../services/deezer_service.dart';
 import '../services/storage_service.dart';
 
-/// Coarse snapshot: everything the player UI needs EXCEPT position ticks,
-/// so screens never rebuild 5×/second on position (§6).
 class PlayerSnapshot {
   const PlayerSnapshot({
     required this.playing,
@@ -34,8 +32,6 @@ class PlayerSnapshot {
       : null;
 }
 
-/// Fine-grained progress snapshot — consumed only by seek bars and time
-/// text (§4, §6).
 class ProgressSnapshot {
   const ProgressSnapshot({
     required this.position,
@@ -48,9 +44,6 @@ class ProgressSnapshot {
   final Duration? duration;
 }
 
-/// Single owner of the one [AudioPlayer] (§4): queue, favorites, last-played
-/// persistence. The state source of truth is the player's own streams —
-/// never a local bool.
 class PlayerController extends ChangeNotifier {
   PlayerController({required this._storage, required this._deezer}) {
     _favorites = _storage.loadFavorites();
@@ -75,9 +68,6 @@ class PlayerController extends ChangeNotifier {
   final _messages = StreamController<String>.broadcast();
   StreamSubscription<int?>? _indexSub;
 
-  // ---- streams, combined with rxdart (§4) ----
-
-  /// Position / buffered / duration — ticks. Only seek bars listen.
   Stream<ProgressSnapshot> get progressStream => Rx.combineLatest3(
     _player.positionStream,
     _player.bufferedPositionStream,
@@ -90,7 +80,6 @@ class PlayerController extends ChangeNotifier {
         ),
   ).share();
 
-  /// Playing / processing / queue / index — fires only on state changes.
   Stream<PlayerSnapshot> get stateStream => Rx.combineLatest3(
     _player.playerStateStream,
     _player.sequenceStateStream,
@@ -105,10 +94,7 @@ class PlayerController extends ChangeNotifier {
     ),
   ).share();
 
-  /// User-facing messages (broken URL skips, etc.) → snackbars.
   Stream<String> get messages => _messages.stream;
-
-  // ---- derived getters ----
 
   bool get isPlaying => _player.playing;
   bool get isBuffering =>
@@ -141,9 +127,6 @@ class PlayerController extends ChangeNotifier {
     ];
   }
 
-  // ---- playback control (§4) ----
-
-  /// Loads [tracks] as the queue and starts playing from [initialIndex].
   Future<void> playQueue(List<Track> tracks, {int initialIndex = 0}) async {
     if (tracks.isEmpty) return;
     _queue = List.of(tracks);
@@ -166,11 +149,10 @@ class PlayerController extends ChangeNotifier {
     }
   }
 
-  /// Play/Pause from ANY surface (§4). The truth is the player state.
   Future<void> togglePlayPause() async {
     final now = DateTime.now();
     if (now.difference(_lastToggle) < const Duration(milliseconds: 300)) {
-      return; // debounce rapid taps (§4)
+      return;
     }
     _lastToggle = now;
     try {
@@ -208,7 +190,6 @@ class PlayerController extends ChangeNotifier {
     }
   }
 
-  /// Previous restarts the song if position > 3s, else goes to prior track (§4).
   Future<void> previous() async {
     try {
       if (_player.position > const Duration(seconds: 3)) {
@@ -252,14 +233,11 @@ class PlayerController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Queue reorder by drag (§3.D).
   Future<void> moveQueueItem(int from, int to) async {
     await _player.moveAudioSource(from, to);
     await _saveLastPlayed();
     notifyListeners();
   }
-
-  // ---- favorites (§3.B) ----
 
   bool isFavorite(Track track) => _favoriteIds.contains(track.id);
 
@@ -268,7 +246,7 @@ class PlayerController extends ChangeNotifier {
       _favorites.removeWhere((t) => t.id == track.id);
     } else {
       _favoriteIds.add(track.id);
-      _favorites = [track, ..._favorites]; // most recent first
+      _favorites = [track, ..._favorites];
     }
     await _storage.saveFavorites(_favorites);
     notifyListeners();
@@ -276,10 +254,6 @@ class PlayerController extends ChangeNotifier {
 
   List<Track> get favorites => List.unmodifiable(_favorites);
 
-  // ---- audio session (§4) ----
-
-  /// Configure focus + "becoming noisy" behavior. just_audio already pauses
-  /// on focus loss and headphone unplug; this tunes it for music.
   Future<void> initAudioSession() async {
     try {
       final session = await AudioSession.instance;
@@ -288,8 +262,6 @@ class PlayerController extends ChangeNotifier {
       debugPrint('audio_session configure failed: $e');
     }
   }
-
-  // ---- internals ----
 
   AudioSource _sourceFor(Track t) =>
       AudioSource.uri(Uri.parse(t.uri), tag: _mediaItemFor(t));
@@ -317,8 +289,6 @@ class PlayerController extends ChangeNotifier {
     );
   }
 
-  /// Expired Deezer preview → re-fetch once before play (§4). Broken URL →
-  /// skip to next with a snackbar (§4).
   Future<void> _handlePlaybackError() async {
     final track = currentTrack;
     if (track == null) return;
@@ -365,11 +335,10 @@ class PlayerController extends ChangeNotifier {
       );
       notifyListeners();
     } catch (e) {
-      debugPrint('restore failed: $e'); // restore is best-effort
+      debugPrint('restore failed: $e');
     }
   }
 
-  /// Persist on pause and on track change; restore happens paused (§4).
   Future<void> _saveLastPlayed() async {
     final queue = _queueFromSequence();
     if (queue.isEmpty) return;

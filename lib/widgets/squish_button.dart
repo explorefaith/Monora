@@ -4,7 +4,6 @@ import '../core/app_colors.dart';
 import '../core/app_text.dart';
 import '../core/constants.dart';
 
-/// The two-layer neumorphic cream shadow pair (§2).
 const List<BoxShadow> kCreamShadows = [
   BoxShadow(
     color: AppColors.shadowLight,
@@ -23,16 +22,11 @@ const List<BoxShadow> kCreamShadowsDeep = [
   BoxShadow(color: AppColors.shadowWarm, offset: Offset(9, 9), blurRadius: 22),
 ];
 
-/// Pressed shadows with the same structure so AnimatedContainer can lerp
-/// smoothly into the "inset" look.
 const List<BoxShadow> kCreamShadowsPressed = [
   BoxShadow(color: Colors.transparent, offset: Offset(-1, -1), blurRadius: 1),
   BoxShadow(color: Colors.transparent, offset: Offset(1, 1), blurRadius: 1),
 ];
 
-/// Cream button with the "sticky squish" press (§2): shadows invert to an
-/// inset look, scales to 0.96 over 120ms easeOut, springs back with
-/// easeOutBack. Ripples are never used (§6).
 class SquishButton extends StatefulWidget {
   const SquishButton({
     super.key,
@@ -102,7 +96,7 @@ class _SquishButtonState extends State<SquishButton>
         builder: (context, child) {
           final t = reduceMotion ? 0.0 : _curve.value;
           return Transform.scale(
-            scale: 1 - 0.04 * t, // sticky squish: 0.96 at full press (§2)
+            scale: 1 - 0.04 * t,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Color.lerp(baseColor, AppColors.surfaceSunken, t * 0.7),
@@ -127,8 +121,6 @@ class _SquishButtonState extends State<SquishButton>
   }
 }
 
-/// 44x44 circular squish button for control rows (§2: 44x44 tap targets).
-/// Pass [selected] to tint it into the sunken/active look.
 class SquishIconButton extends StatelessWidget {
   const SquishIconButton({
     super.key,
@@ -165,8 +157,6 @@ class SquishIconButton extends StatelessWidget {
   }
 }
 
-/// Lightweight squish-scale for list rows / large surfaces (§6: ripples are
-/// replaced by squish-scale on press).
 class PressableScale extends StatefulWidget {
   const PressableScale({
     super.key,
@@ -205,8 +195,6 @@ class _PressableScaleState extends State<PressableScale> {
   }
 }
 
-/// Caramel-filled squish button for primary actions ("Allow access",
-/// "Retry", …).
 class SquishFilledButton extends StatelessWidget {
   const SquishFilledButton({super.key, required this.label, this.onTap});
 

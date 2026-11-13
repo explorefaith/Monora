@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import '../core/constants.dart';
 import '../models/track.dart';
 
-/// Non-200 reply from the Deezer API.
 class DeezerException implements Exception {
   const DeezerException(this.message);
   final String message;
@@ -16,20 +15,15 @@ class DeezerException implements Exception {
   String toString() => 'DeezerException: $message';
 }
 
-/// No route / timeout — the device is effectively offline.
 class OfflineException implements Exception {
   const OfflineException();
 }
 
-/// Deezer public API (charts, search, 30s previews) behind a service class
-/// (§1) so Audius / Jamendo (full-length) can slot in later with the same
-/// shape. Official public endpoints only — no scraping (§7).
 class DeezerService {
   DeezerService({http.Client? client}) : _client = client ?? http.Client();
 
   final http.Client _client;
 
-  /// "Trending" chip → global chart tracks.
   Future<List<Track>> trending({int limit = kDiscoverLimit}) async {
     final data = await _getJson(
       Uri.https(kDeezerHost, '/chart/0/tracks', {'limit': '$limit'}),
@@ -37,7 +31,6 @@ class DeezerService {
     return _mapList(data['data'] as List<dynamic>?);
   }
 
-  /// Language chips → curated seed query search.
   Future<List<Track>> search(String query, {int limit = kDiscoverLimit}) async {
     final data = await _getJson(
       Uri.https(kDeezerHost, '/search', {'q': query, 'limit': '$limit'}),
@@ -45,7 +38,6 @@ class DeezerService {
     return _mapList(data['data'] as List<dynamic>?);
   }
 
-  /// Re-fetch one track whose preview URL expired, before play (§4).
   Future<Track> trackById(String id) async {
     final numeric = int.tryParse(id.replaceFirst('deezer_', ''));
     if (numeric == null) throw DeezerException('bad id: $id');
@@ -87,7 +79,7 @@ class DeezerService {
       artUrl: (artUrl != null && artUrl.isNotEmpty) ? artUrl : null,
       isLocal: false,
       isPreview: true,
-      duration: null, // duration field is the full song; the preview is 30s
+      duration: null,
     );
   }
 }

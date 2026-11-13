@@ -3,7 +3,6 @@ import 'package:material_ui/material_ui.dart';
 import 'app_colors.dart';
 import 'app_text.dart';
 
-/// Light "Warm Vanilla Cream" theme — the only theme in v1 (§2).
 class AppTheme {
   AppTheme._();
 
@@ -30,7 +29,7 @@ class AppTheme {
         error: AppColors.error,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      splashFactory: NoSplash.splashFactory, // ripples replaced by squish (§6)
+      splashFactory: NoSplash.splashFactory,
       textTheme: textTheme,
       iconTheme: const IconThemeData(color: AppColors.textPrimary, size: 24),
       dividerTheme: const DividerThemeData(

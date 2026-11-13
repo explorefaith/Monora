@@ -6,8 +6,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/track.dart';
 
-/// Lightweight projection of an on_audio_query album/artist so the UI never
-/// touches plugin types directly.
 class AlbumInfo {
   const AlbumInfo({
     required this.id,
@@ -32,14 +30,9 @@ class ArtistInfo {
   final int trackCount;
 }
 
-/// Reads the device media library via on_audio_query and maps everything to
-/// the shared [Track] model (§1). The caller must have audio permission
-/// granted before calling any load method (handled in the Library tab).
 class LocalService {
   final OnAudioQuery _query = OnAudioQuery();
 
-  /// Cached artwork file URIs — written once, reused forever (§4: local
-  /// cover art must become a file URI for MediaItem.artUri).
   final Map<int, Uri?> _artworkCache = {};
 
   Future<List<Track>> loadSongs() async {
@@ -105,12 +98,9 @@ class LocalService {
     return songs.map(_songToTrack).toList();
   }
 
-  /// Cover art bytes for the album/artist grids.
   Future<Uint8List?> artworkBytes(int id, ArtworkType type) =>
       _query.queryArtwork(id, type, size: 300);
 
-  /// Converts cached artwork bytes to a file URI, once per song id.
-  /// Returns null when the song has no embedded artwork.
   Future<Uri?> artworkUri(int songId) async {
     if (_artworkCache.containsKey(songId)) return _artworkCache[songId];
 
@@ -132,7 +122,7 @@ class LocalService {
         }
       }
     } catch (_) {
-      uri = null; // artwork is cosmetic — never block loading
+      uri = null;
     }
     _artworkCache[songId] = uri;
     return uri;

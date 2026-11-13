@@ -13,8 +13,6 @@ import 'discover_tab.dart';
 import 'favorites_tab.dart';
 import 'library_tab.dart';
 
-/// Home shell (§3.B): three tabs in an IndexedStack (state preserved) with
-/// the floating pill nav bar and the mini player docked above it.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -35,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Broken-URL skips etc. surface as snackbars here (§4).
+
     _messagesSub = context.read<PlayerController>().messages.listen((msg) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
@@ -77,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-/// Floating pill nav bar (§3.B): cream surface, caramel active dot.
 class _PillNavBar extends StatelessWidget {
   const _PillNavBar({
     required this.tabs,

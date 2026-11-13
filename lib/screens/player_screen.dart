@@ -17,10 +17,6 @@ import '../widgets/seek_bar.dart';
 import '../widgets/texture_overlay.dart';
 import '../widgets/track_tile.dart';
 
-/// Full player (§3.D): big double-shadowed cover with Hero, background tint
-/// extracted from the cover blended 15% into cream, drifting caramel/blush
-/// blobs, serif title, pop heart, custom seek bar, shuffle/prev/PLAY/next/
-/// repeat, and a draggable reorderable queue bottom sheet.
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
 
@@ -62,8 +58,6 @@ class _PlayerScreenState extends State<PlayerScreen>
     super.dispose();
   }
 
-  /// Extract a dominant color from the current cover and blend 15% into
-  /// cream (§3.D). Best-effort: on any failure keep the plain cream.
   Future<void> _computeTint(Track track) async {
     if (_tintedFor == track.id) return;
     _tintedFor = track.id;
@@ -86,7 +80,7 @@ class _PlayerScreenState extends State<PlayerScreen>
       if (!mounted) return;
       setState(
         () => _tint = (dominant != null && dominant.computeLuminance() > 0.85)
-            ? null // too close to white — keep the cream
+            ? null
             : dominant,
       );
     } catch (_) {
@@ -96,8 +90,6 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   Color get _backgroundColor =>
       Color.lerp(AppColors.background, _tint ?? AppColors.primary, 0.15)!;
-
-  // ---- drag-to-dismiss (§6: custom route with drag-to-dismiss) ----
 
   void _onVerticalDragUpdate(DragUpdateDetails details, double height) {
     final route = ModalRoute.of(context);
@@ -148,7 +140,6 @@ class _PlayerScreenState extends State<PlayerScreen>
         onVerticalDragEnd: _onVerticalDragEnd,
         child: Stack(
           children: [
-            // Drifting caramel/blush blobs behind everything (§2).
             const Positioned.fill(child: _Blobs()),
             const Positioned.fill(child: TextureOverlay()),
             SafeArea(
@@ -158,7 +149,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                   final state = snap.data;
                   final track = state?.currentTrack;
                   if (track != null) {
-                    // Fire-and-forget palette extraction per track.
                     _computeTint(track);
                   }
                   if (track == null) {
@@ -178,7 +168,6 @@ class _PlayerScreenState extends State<PlayerScreen>
 
                   return Column(
                     children: [
-                      // Top bar: dismiss + queue.
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: kPagePadding,
@@ -214,7 +203,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                           child: Column(
                             children: [
                               const SizedBox(height: Spacing.lg),
-                              // Hero cover art, scales 0.92 when paused (§3.D).
+
                               Hero(
                                 tag: 'cover-art',
                                 child: RepaintBoundary(
@@ -293,7 +282,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 child: SeekBar(controller: controller),
                               ),
                               const SizedBox(height: Spacing.lg),
-                              // Controls row (§3.D).
+
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: kPagePadding,
@@ -352,8 +341,6 @@ class _PlayerScreenState extends State<PlayerScreen>
   }
 }
 
-/// BIG play/pause: 72px cream button with deep shadow (§3.D), animated
-/// icon, loading spinner while buffering.
 class _BigPlayButton extends StatelessWidget {
   const _BigPlayButton({
     required this.controller,
@@ -395,7 +382,6 @@ class _BigPlayButton extends StatelessWidget {
   }
 }
 
-/// Favorite heart with pop animation (§3.D), blush when active.
 class _FavoriteHeart extends StatelessWidget {
   const _FavoriteHeart({required this.track, required this.controller});
 
@@ -410,10 +396,8 @@ class _FavoriteHeart extends StatelessWidget {
       tween: Tween(end: 1.0),
       duration: kUi,
       curve: kSpring,
-      builder: (context, t, child) => Transform.scale(
-        scale: 0.7 + 0.3 * t, // pop from 0.7 → 1.0 with overshoot
-        child: child,
-      ),
+      builder: (context, t, child) =>
+          Transform.scale(scale: 0.7 + 0.3 * t, child: child),
       child: SquishIconButton(
         icon: fav ? Icons.favorite : Icons.favorite_outline,
         iconColor: fav ? null : AppColors.textPrimary,
@@ -423,8 +407,6 @@ class _FavoriteHeart extends StatelessWidget {
   }
 }
 
-/// Two large blurred caramel/blush circles drifting slowly behind the
-/// player screen, 20s loop (§2).
 class _Blobs extends StatefulWidget {
   const _Blobs();
 
@@ -505,7 +487,6 @@ class _BlobLayout extends StatelessWidget {
   );
 }
 
-/// Draggable queue bottom sheet (§3.D): upcoming tracks, reorder by drag.
 class _QueueSheet extends StatelessWidget {
   const _QueueSheet();
 

@@ -8,8 +8,6 @@ import '../core/constants.dart';
 import '../core/transitions.dart';
 import 'home.dart';
 
-/// Splash (§3.A): "Monora" wordmark fades and scales in (600ms), tiny wave
-/// animation, then crossfade to Home.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -21,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late final AnimationController _intro = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 600), // §3.A
+    duration: const Duration(milliseconds: 600),
   )..forward();
   late final AnimationController _wave = AnimationController(
     vsync: this,
@@ -109,7 +107,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
-/// Tiny sine wave under the wordmark, fading out toward the edges.
 class _WavePainter extends CustomPainter {
   _WavePainter({required this.phase});
 
@@ -127,7 +124,7 @@ class _WavePainter extends CustomPainter {
     var first = true;
     for (double x = 0; x <= size.width; x += 3) {
       final t = x / size.width;
-      // Amplitude fades toward the edges so the wave looks soft.
+
       final envelope = 3.5 * (1 - (t - 0.5).abs() * 2).clamp(0.0, 1.0);
       final y = size.height / 2 + envelope * math.sin(t * 4 * math.pi - phase);
       if (first) {
