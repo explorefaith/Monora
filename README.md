@@ -46,3 +46,17 @@ Pinned dependency versions live in [pubspec.yaml](pubspec.yaml) (just_audio 0.10
 ## First push to GitHub
 
 See [github.txt](github.txt).
+
+## Troubleshooting background playback
+
+If songs stop after a while in the background, or stop when the app is closed:
+
+- When the "Keep the music running" card appears, tap **Allow** — this exempts
+  Monora from battery optimization.
+- On Xiaomi (MIUI), Samsung, Oppo/Vivo/Realme devices also enable **Autostart**
+  for Monora and set its battery policy to **Unrestricted / No restrictions**.
+  These OEM skins kill even foreground services otherwise.
+- Swiping away the app should NOT stop playback (Android foreground service).
+  Force stop from App info always stops it — that is expected.
+- Online songs are 30-second Deezer previews; a preview ending and moving to
+  the next track is normal, not a stop.

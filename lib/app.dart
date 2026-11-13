@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'core/app_theme.dart';
 import 'player/player_controller.dart';
 import 'screens/splash.dart';
+import 'services/battery_service.dart';
 import 'services/deezer_service.dart';
 import 'services/local_service.dart';
 import 'services/storage_service.dart';
@@ -19,6 +20,7 @@ class MonoraApp extends StatelessWidget {
       providers: [
         Provider<LocalService>(create: (_) => LocalService()),
         Provider<DeezerService>(create: (_) => DeezerService()),
+        Provider<BatteryService>(create: (_) => BatteryService()),
         Provider<StorageService>.value(value: storage),
         ChangeNotifierProvider<PlayerController>(
           create: (context) => PlayerController(

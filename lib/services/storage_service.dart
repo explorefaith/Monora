@@ -83,4 +83,10 @@ class StorageService {
       }),
     );
   }
+
+  bool get batteryHintDismissed =>
+      _p.getBool('monora.battery_hint.v1') ?? false;
+
+  Future<void> dismissBatteryHint() =>
+      _p.setBool('monora.battery_hint.v1', true);
 }

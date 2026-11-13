@@ -65,6 +65,7 @@ class PlayerController extends ChangeNotifier {
 
   DateTime _lastToggle = DateTime.fromMillisecondsSinceEpoch(0);
   final Set<String> _refetchedIds = {};
+  final Set<String> _retryIds = {};
   final _messages = StreamController<String>.broadcast();
   StreamSubscription<int?>? _indexSub;
 
@@ -134,6 +135,7 @@ class PlayerController extends ChangeNotifier {
     _queue = List.of(tracks);
     _tracksById = {for (final t in tracks) t.id: t};
     _refetchedIds.clear();
+    _retryIds.clear();
     try {
       await _player.setAudioSources([
         for (final t in _queue) _sourceFor(t),
@@ -295,6 +297,19 @@ class PlayerController extends ChangeNotifier {
   Future<void> _handlePlaybackError() async {
     final track = currentTrack;
     if (track == null) return;
+
+    if (_retryIds.add(track.id)) {
+      try {
+        await _player.seek(
+          Duration.zero,
+          index: _player.sequenceState.currentIndex,
+        );
+        await _player.play();
+        return;
+      } on PlayerException {
+        // transient recovery failed — fall through to refetch / skip
+      }
+    }
 
     if (!track.isLocal && !_refetchedIds.contains(track.id)) {
       _refetchedIds.add(track.id);
