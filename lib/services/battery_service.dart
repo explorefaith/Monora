@@ -17,13 +17,17 @@ class BatteryService {
     }
   }
 
-  Future<void> requestIgnore() async {
-    if (!Platform.isAndroid) return;
+  /// Returns true when the direct exemption dialog was shown, false when it
+  /// was blocked and the app details settings opened instead.
+  Future<bool> requestIgnore() async {
+    if (!Platform.isAndroid) return true;
     try {
-      await _channel.invokeMethod('requestIgnoreBatteryOptimizations');
+      final shown = await _channel.invokeMethod<bool>(
+        'requestIgnoreBatteryOptimizations',
+      );
+      return shown ?? false;
     } on PlatformException {
-      // some OEMs block the direct dialog — the user can still allow it
-      // from system battery settings
+      return false;
     }
   }
 }

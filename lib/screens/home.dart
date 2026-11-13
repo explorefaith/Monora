@@ -58,9 +58,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _allowBattery() async {
     final battery = context.read<BatteryService>();
     final storage = context.read<StorageService>();
-    await battery.requestIgnore();
+    final dialogShown = await battery.requestIgnore();
     await storage.dismissBatteryHint();
-    if (mounted) setState(() => _showBatteryHint = false);
+    if (mounted) {
+      setState(() => _showBatteryHint = false);
+      if (!dialogShown) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Opened app settings — set Battery to Unrestricted for Monora.',
+              ),
+            ),
+          );
+      }
+    }
   }
 
   Future<void> _dismissBattery() async {

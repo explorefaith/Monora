@@ -27,7 +27,16 @@ class MainActivity : AudioServiceActivity() {
                             startActivity(intent)
                             result.success(true)
                         } catch (e: Exception) {
-                            result.success(false)
+                            try {
+                                val fallback = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.parse("package:$packageName"),
+                                )
+                                startActivity(fallback)
+                                result.success(false)
+                            } catch (e2: Exception) {
+                                result.success(false)
+                            }
                         }
                     }
                     else -> result.notImplemented()
