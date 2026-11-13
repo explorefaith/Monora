@@ -88,6 +88,7 @@ class _SquishButtonState extends State<SquishButton>
     final deep = widget.deepShadow;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTapDown: reduceMotion ? null : _down,
       onTapUp: reduceMotion ? null : (_) => _up(),
       onTapCancel: _up,
@@ -187,6 +188,7 @@ class _PressableScaleState extends State<PressableScale> {
     final reduceMotion = MediaQuery.of(context).disableAnimations;
     final target = _pressed && !reduceMotion ? widget.pressedScale : 1.0;
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),

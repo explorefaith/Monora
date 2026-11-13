@@ -323,7 +323,8 @@ class _PlayerScreenState extends State<PlayerScreen>
                                     ),
                                     _BigPlayButton(
                                       controller: controller,
-                                      buffering: buffering,
+                                      buffering:
+                                          buffering || controller.isPreparing,
                                       playing: playing,
                                     ),
                                     SquishIconButton(

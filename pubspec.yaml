@@ -1,7 +1,7 @@
 name: monora
 description: "Monora — a warm, creamy music player for local + online songs."
 publish_to: 'none'
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: ^3.14.0

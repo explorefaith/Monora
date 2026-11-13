@@ -150,6 +150,7 @@ Widget _playPause(PlayerController controller, Track track) {
       final state = snap.data;
       final processing = state?.processingState ?? ProcessingState.idle;
       final loading =
+          controller.isPreparing ||
           processing == ProcessingState.loading ||
           processing == ProcessingState.buffering;
       final playing = state?.playing ?? false;

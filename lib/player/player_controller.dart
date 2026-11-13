@@ -66,6 +66,30 @@ class PlayerController extends ChangeNotifier {
   DateTime _lastToggle = DateTime.fromMillisecondsSinceEpoch(0);
   final Set<String> _refetchedIds = {};
   final Set<String> _retryIds = {};
+  Future<void> _loadChain = Future.value();
+  int _loadGeneration = 0;
+  bool _isPreparing = false;
+
+  bool get isPreparing => _isPreparing;
+
+  Future<void> _enqueueLoad(Future<void> Function() task) {
+    final generation = ++_loadGeneration;
+    Future<void> run() async {
+      try {
+        if (generation != _loadGeneration) return;
+        await task();
+      } finally {
+        if (generation == _loadGeneration && _isPreparing) {
+          _isPreparing = false;
+          notifyListeners();
+        }
+      }
+    }
+
+    _loadChain = _loadChain.then((_) => run());
+    return _loadChain;
+  }
+
   final _messages = StreamController<String>.broadcast();
   StreamSubscription<int?>? _indexSub;
 
@@ -132,25 +156,31 @@ class PlayerController extends ChangeNotifier {
 
   Future<void> playQueue(List<Track> tracks, {int initialIndex = 0}) async {
     if (tracks.isEmpty) return;
-    _queue = List.of(tracks);
-    _tracksById = {for (final t in tracks) t.id: t};
-    _refetchedIds.clear();
-    _retryIds.clear();
-    try {
-      await _player.setAudioSources([
-        for (final t in _queue) _sourceFor(t),
-      ], initialIndex: initialIndex.clamp(0, _queue.length - 1));
-      await _player.play();
-      await _saveLastPlayed();
+    if (!_isPreparing) {
+      _isPreparing = true;
       notifyListeners();
-    } on PlayerException catch (e) {
-      _messages.add(
-        'Could not play "${_queue[initialIndex.clamp(0, _queue.length - 1)].title}".',
-      );
-      debugPrint(
-        'playQueue PlayerException: code=${e.code} message=${e.message}',
-      );
     }
+    final startAt = initialIndex.clamp(0, tracks.length - 1);
+    final startTitle = tracks[startAt].title;
+    return _enqueueLoad(() async {
+      _queue = List.of(tracks);
+      _tracksById = {for (final t in tracks) t.id: t};
+      _refetchedIds.clear();
+      _retryIds.clear();
+      try {
+        await _player.setAudioSources([
+          for (final t in _queue) _sourceFor(t),
+        ], initialIndex: startAt);
+        await _player.play();
+        await _saveLastPlayed();
+        notifyListeners();
+      } on PlayerException catch (e) {
+        _messages.add('Could not play "$startTitle".');
+        debugPrint(
+          'playQueue PlayerException: code=${e.code} message=${e.message}',
+        );
+      }
+    });
   }
 
   Future<void> togglePlayPause() async {
@@ -325,10 +355,12 @@ class PlayerController extends ChangeNotifier {
             0,
             _queue.length - 1,
           );
-          await _player.setAudioSources([
-            for (final t in _queueFromSequence()) _sourceFor(t),
-          ], initialIndex: idx);
-          await _player.play();
+          await _enqueueLoad(() async {
+            await _player.setAudioSources([
+              for (final t in _queueFromSequence()) _sourceFor(t),
+            ], initialIndex: idx);
+            await _player.play();
+          });
           return;
         }
       } catch (e) {
@@ -340,21 +372,23 @@ class PlayerController extends ChangeNotifier {
     await next();
   }
 
-  Future<void> _restoreLastPlayed() async {
-    try {
-      final last = _storage.loadLastPlayed();
-      if (last == null || last.queue.isEmpty) return;
-      _queue = last.queue;
-      _tracksById = {for (final t in last.queue) t.id: t};
-      await _player.setAudioSources(
-        [for (final t in last.queue) _sourceFor(t)],
-        initialIndex: last.index,
-        initialPosition: last.position,
-      );
-      notifyListeners();
-    } catch (e) {
-      debugPrint('restore failed: $e');
-    }
+  Future<void> _restoreLastPlayed() {
+    return _enqueueLoad(() async {
+      try {
+        final last = _storage.loadLastPlayed();
+        if (last == null || last.queue.isEmpty) return;
+        _queue = last.queue;
+        _tracksById = {for (final t in last.queue) t.id: t};
+        await _player.setAudioSources(
+          [for (final t in last.queue) _sourceFor(t)],
+          initialIndex: last.index,
+          initialPosition: last.position,
+        );
+        notifyListeners();
+      } catch (e) {
+        debugPrint('restore failed: $e');
+      }
+    });
   }
 
   Future<void> _saveLastPlayed() async {
