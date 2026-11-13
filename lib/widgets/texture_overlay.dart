@@ -1,0 +1,51 @@
+import 'dart:math' as math;
+
+import 'package:material_ui/material_ui.dart';
+
+import '../core/app_colors.dart';
+
+/// Very faint paper-grain texture over cream backgrounds (§2): tiny seeded
+/// dots at ~4% opacity. Wrapped in [RepaintBoundary] so it never repaints
+/// per frame.
+class TextureOverlay extends StatelessWidget {
+  const TextureOverlay({super.key, this.opacity = 0.04});
+
+  final double opacity;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: RepaintBoundary(
+        child: CustomPaint(
+          size: Size.infinite,
+          painter: _GrainPainter(opacity),
+        ),
+      ),
+    );
+  }
+}
+
+class _GrainPainter extends CustomPainter {
+  _GrainPainter(this.opacity);
+
+  final double opacity;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Fixed seed → stable grain pattern for the same area.
+    final rng = math.Random(7);
+    final paint = Paint()
+      ..color = AppColors.textPrimary.withValues(alpha: opacity);
+    final count = ((size.width * size.height) / 900).round().clamp(80, 400);
+    for (var i = 0; i < count; i++) {
+      final dx = rng.nextDouble() * size.width;
+      final dy = rng.nextDouble() * size.height;
+      final r = rng.nextDouble() * 0.8 + 0.3;
+      canvas.drawCircle(Offset(dx, dy), r, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_GrainPainter oldDelegate) =>
+      oldDelegate.opacity != opacity;
+}

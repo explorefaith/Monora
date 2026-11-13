@@ -1,0 +1,572 @@
+/* Monora — Warm Vanilla Cream (the app's exact design language) */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('fonts/Fraunces.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('fonts/PlusJakartaSans.ttf') format('truetype');
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('fonts/HindSiliguri-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('fonts/HindSiliguri-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('fonts/HindSiliguri-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --vanilla: #FBF6EA;
+  --cream: #FFFDF7;
+  --sunken: #F3EBD8;
+  --honey: #E3B778;
+  --toasted: #C48A4A;
+  --espresso: #3B2F22;
+  --tan: #8C7B66;
+  --divider: #EADFC8;
+  --blush: #F2C9B8;
+  --shadow-light: rgba(255, 255, 255, 1);
+  --shadow-warm: rgba(217, 199, 163, 0.45);
+
+  --serif: 'Fraunces', 'Hind Siliguri', serif;
+  --sans: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+
+  --r-tile: 16px;
+  --r-card: 24px;
+  --r-pill: 28px;
+  --r-cover: 32px;
+
+  /* the app's motion scale: micro 120ms, UI 250ms, page 350ms */
+  --micro: 120ms;
+  --ui: 250ms;
+  --page: 350ms;
+  --enter: cubic-bezier(0.33, 1, 0.68, 1);      /* easeOutCubic */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);  /* easeOutBack */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--vanilla);
+  color: var(--espresso);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The two-layer neumorphic cream shadow pair, shared everywhere. */
+.cream-shadow,
+.pillnav, .btn, .chip, .feature-icon, .swatch i,
+.phone-screen, .cover, .ctrl-play, .ctrl-round, .seek-thumb {
+  box-shadow:
+    -4px -4px 10px var(--shadow-light),
+    6px 6px 16px var(--shadow-warm);
+}
+
+main { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+:focus-visible {
+  outline: 2.5px solid var(--toasted);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- floating pill nav ---------- */
+
+.pillnav {
+  position: sticky;
+  top: 14px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  max-width: 1032px;
+  margin: 14px auto 0;
+  padding: 10px 12px 10px 18px;
+  background: var(--cream);
+  border-radius: var(--r-pill);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--espresso);
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: var(--sunken);
+  color: var(--toasted);
+}
+
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 650;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.pillnav-links {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pillnav-links a {
+  color: var(--tan);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 8px 13px;
+  border-radius: 999px;
+  transition: color var(--micro) var(--enter), background var(--micro) var(--enter);
+}
+
+.pillnav-links a:hover { color: var(--toasted); background: var(--sunken); }
+
+/* ---------- squish buttons (§2) ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--espresso);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 0;
+  cursor: pointer;
+  transition: transform var(--micro) var(--enter),
+              background var(--micro) var(--enter),
+              box-shadow var(--micro) var(--enter);
+}
+
+.btn:hover { background: var(--sunken); }
+
+.btn:active {
+  transform: scale(0.96);
+  background: var(--sunken);
+  box-shadow: -1px -1px 1px var(--shadow-light), 1px 1px 1px var(--shadow-warm);
+  transition-timing-function: var(--enter);
+}
+
+.btn-deep { background: var(--toasted); color: #FFFDF7; }
+.btn-deep:hover { background: #b37c3e; }
+.btn-deep:active { background: #b37c3e; }
+
+.btn-ghost { box-shadow: none; background: transparent; color: var(--tan); }
+.btn-ghost:hover { color: var(--toasted); background: var(--sunken); }
+
+.btn-big {
+  padding: 15px 28px;
+  font-size: 1.05rem;
+  gap: 11px;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 48px;
+  padding: 88px 0 64px;
+}
+
+.hero-copy h1 {
+  font-family: var(--serif);
+  font-weight: 680;
+  font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 90;
+  font-size: clamp(2.7rem, 6vw, 4.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.hero-wave {
+  display: block;
+  margin: 14px 0 4px 4px;
+  max-width: 260px;
+  width: 100%;
+}
+
+.hero-sub {
+  max-width: 46ch;
+  margin-top: 12px;
+  font-size: 1.08rem;
+  color: var(--tan);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.hero-meta {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--tan);
+}
+
+/* ---------- phone mock (the app's player screen) ---------- */
+
+.phone { justify-self: center; width: 320px; max-width: 100%; }
+
+.phone-screen {
+  position: relative;
+  overflow: hidden;
+  background: var(--cream);
+  border-radius: 42px;
+  padding: 26px 22px 30px;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+}
+.blob-a { width: 210px; height: 210px; top: -70px; left: -60px; background: rgba(227, 183, 120, 0.30); }
+.blob-b { width: 230px; height: 230px; bottom: -90px; right: -80px; background: rgba(242, 201, 184, 0.32); }
+
+.player { position: relative; text-align: center; }
+
+.player-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-eyebrow {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--tan);
+}
+
+.ctrl {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--espresso);
+  cursor: pointer;
+  transition: transform var(--micro) var(--enter), background var(--micro) var(--enter);
+}
+.ctrl:active { transform: scale(0.9); background: var(--sunken); }
+
+.ctrl-round { background: var(--cream); color: var(--tan); }
+
+.ctrl-play {
+  width: 70px;
+  height: 70px;
+  background: var(--cream);
+  color: var(--espresso);
+}
+
+.cover-wrap { display: grid; place-items: center; margin: 26px 0 20px; }
+
+.cover {
+  display: grid;
+  place-items: center;
+  width: 196px;
+  height: 196px;
+  border-radius: var(--r-cover);
+  background:
+    radial-gradient(120% 120% at 20% 15%, var(--blush) 0%, transparent 52%),
+    radial-gradient(130% 130% at 85% 80%, var(--honey) 0%, transparent 58%),
+    linear-gradient(150deg, #F6E7CE 0%, var(--sunken) 60%, #EAD9BC 100%);
+  transform-origin: center;
+  transition: transform 400ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* breathing = "playing" */
+.phone.is-playing .cover { animation: breathe 4.6s ease-in-out infinite; }
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.965); }
+}
+
+.song {
+  font-family: var(--serif);
+  font-weight: 620;
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+
+.artist { margin-top: 3px; font-size: 0.9rem; color: var(--tan); }
+
+/* seek */
+.seek { margin-top: 20px; }
+
+.seek-track {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--sunken);
+}
+
+.seek-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: 5px;
+  background: var(--toasted);
+}
+
+.seek-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--toasted);
+  transform: translate(-50%, -50%);
+}
+
+.seek-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--tan);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.hidden { display: none; }
+
+/* ---------- chips band ---------- */
+
+.chips-band {
+  padding: 54px 0;
+  border-top: 1px solid var(--divider);
+}
+
+.chips-lead { font-size: 0.95rem; color: var(--tan); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--espresso);
+  transition: background var(--micro) var(--enter), transform var(--micro) var(--enter);
+}
+
+.chip:hover { background: var(--sunken); transform: scale(1.03); }
+
+.chip.is-active { background: var(--sunken); color: var(--toasted); font-weight: 600; }
+.chip-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--toasted); }
+
+.mini-chip {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--sunken);
+  color: var(--toasted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.chips-note { margin-top: 16px; max-width: 52ch; font-size: 0.88rem; color: var(--tan); }
+
+/* ---------- features: icon rows ---------- */
+
+.features {
+  display: grid;
+  gap: 34px;
+  padding: 58px 0 62px;
+  border-top: 1px solid var(--divider);
+}
+
+.feature {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 22px;
+  align-items: start;
+  max-width: 66ch;
+}
+
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 19px;
+  background: var(--cream);
+  color: var(--toasted);
+}
+
+.feature h3 {
+  font-family: var(--serif);
+  font-weight: 620;
+  font-size: 1.22rem;
+  letter-spacing: -0.01em;
+}
+
+.feature p { margin-top: 6px; color: var(--tan); }
+
+/* ---------- design language ---------- */
+
+.design {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+  padding: 62px 0;
+  border-top: 1px solid var(--divider);
+}
+
+.design h2 {
+  font-family: var(--serif);
+  font-weight: 660;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.design-copy p { margin-top: 14px; color: var(--tan); max-width: 50ch; }
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 12px;
+}
+
+.swatch { text-align: center; }
+
+.swatch i {
+  display: block;
+  height: 64px;
+  border-radius: 16px;
+  border: 1px solid rgba(59, 47, 34, 0.08);
+}
+
+.swatch {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--tan);
+}
+
+/* ---------- download band ---------- */
+
+.dl-band {
+  text-align: center;
+  padding: 74px 24px 84px;
+  background: linear-gradient(180deg, transparent 0%, var(--sunken) 30%, var(--sunken) 100%);
+  border-radius: var(--r-card) var(--r-card) 0 0;
+}
+
+.dl-band h2 {
+  font-family: var(--serif);
+  font-weight: 660;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+}
+
+.dl-band .btn { margin-top: 26px; }
+
+.dl-meta { margin-top: 18px; font-size: 0.9rem; color: var(--tan); }
+
+.dl-check {
+  margin-top: 8px;
+  font-size: 0.74rem;
+  color: var(--tan);
+}
+
+.dl-check code {
+  font-family: ui-monospace, 'Cascadia Mono', monospace;
+  font-size: 0.68rem;
+  word-break: break-all;
+}
+
+/* ---------- footer ---------- */
+
+footer { text-align: center; padding: 34px 0 44px; }
+
+.foot-wave { display: block; margin: 0 auto 10px; }
+
+.foot-line { font-size: 0.85rem; color: var(--tan); }
+
+.foot-line a { color: var(--toasted); text-decoration: none; font-weight: 500; }
+.foot-line a:hover { text-decoration: underline; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; padding: 64px 0 48px; gap: 44px; }
+  .hero-copy { text-align: left; }
+  .phone { width: 300px; }
+  .design { grid-template-columns: 1fr; gap: 30px; }
+}
+
+@media (max-width: 560px) {
+  .pillnav { gap: 10px; padding: 9px 10px 9px 14px; }
+  .pillnav-links { display: none; }
+  .hero { padding-top: 46px; }
+  .hero-cta .btn-ghost { margin-left: 2px; }
+  .phone { width: 100%; }
+  .cover { width: 176px; height: 176px; }
+  .dl-band { margin: 0 16px; }
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .phone.is-playing .cover { animation: none; }
+  .seek-fill, .seek-thumb { transition: none !important; }
+  * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}

@@ -1,0 +1,76 @@
+name: monora
+description: "Monora — a warm, creamy music player for local + online songs."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Material widgets (the current import path for package:flutter/material.dart)
+  material_ui: 1.11.0
+
+  # Player stack (§1, pinned — just_audio 0.10+ removed ConcatenatingAudioSource)
+  just_audio: 0.10.6
+  just_audio_background: 0.0.1-beta.17
+  audio_session: 0.2.4
+
+  # Local media library
+  on_audio_query: 2.9.0
+  permission_handler: 13.0.2
+
+  # Artwork cache dir for local MediaItem.artUri (§4)
+  path_provider: 2.1.6
+
+  # Network & data
+  http: 1.6.0
+  cached_network_image: 4.0.7
+  shared_preferences: 2.5.6
+
+  # UI state
+  provider: 6.1.5+1
+  rxdart: 0.28.0
+  palette_generator: 0.3.3+7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 6.0.0
+
+# Vendored patch: the published on_audio_query_android 1.1.0 predates AGP 8
+# (no namespace in its build.gradle). This copy adds the namespace so the
+# project builds with modern AGP.
+dependency_overrides:
+  on_audio_query_android:
+    path: plugins/on_audio_query_android
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    # Headings & song titles (soft creamy serif, §2)
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces.ttf
+        - asset: assets/fonts/Fraunces-Italic.ttf
+          style: italic
+    # Body, artist, labels (§2)
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans.ttf
+        - asset: assets/fonts/PlusJakartaSans-Italic.ttf
+          style: italic
+    # Bangla fallback — bundled, never fetched at runtime (§2)
+    - family: HindSiliguri
+      fonts:
+        - asset: assets/fonts/HindSiliguri-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HindSiliguri-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HindSiliguri-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/HindSiliguri-Bold.ttf
+          weight: 700

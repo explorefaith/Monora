@@ -1,0 +1,10 @@
+# Monora — push this project to GitHub (https://github.com/explorefaith/Monora.git)
+# Run from the project root. README.md, .gitignore and the full Flutter project
+# already exist, so just init, commit everything and push.
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/explorefaith/Monora.git
+git push -u origin main

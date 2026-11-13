@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monora — your music, unlocked</title>
+<meta name="description" content="Monora plays the songs on your phone and 30-second previews from Bengali, Hindi and English charts — in one warm, creamy player. Free APK for Android 6.0+.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Monora — your music, unlocked">
+<meta property="og:description" content="A warm, creamy music player for Android. Local songs and Bengali, Hindi, English previews in one queue.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="pillnav" aria-label="Site">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none"><path d="M9 18.5V6.8l8-2v10.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.2" cy="18.6" r="2.4" fill="currentColor"/><circle cx="15.2" cy="15.5" r="2.4" fill="currentColor"/></svg>
+    </span>
+    <span class="brand-name">Monora</span>
+  </a>
+  <div class="pillnav-links">
+    <a href="#features">Features</a>
+    <a href="#design">Design</a>
+    <a href="https://github.com/explorefaith/Monora" rel="noopener">GitHub</a>
+  </div>
+  <a class="btn btn-deep" data-download href="https://github.com/explorefaith/Monora/releases/latest/download/monora.apk">Download</a>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-copy">
+      <h1>Your music,<br>unlocked.</h1>
+      <canvas id="wave" class="hero-wave" width="260" height="36" aria-hidden="true"></canvas>
+      <p class="hero-sub">Monora plays the songs already on your phone, and 30‑second previews from Bengali, Hindi and English charts&nbsp;— all in one warm, creamy player.</p>
+      <div class="hero-cta">
+        <a class="btn btn-big" data-download href="https://github.com/explorefaith/Monora/releases/latest/download/monora.apk">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 19.5h15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download APK
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/explorefaith/Monora" rel="noopener">View source</a>
+      </div>
+      <p class="hero-meta"><span id="apk-size">…</span> · Android 6.0 or newer · no account needed</p>
+    </div>
+
+    <!-- PHONE MOCK: the app's full player, built in CSS -->
+    <div class="phone" id="phone">
+      <div class="phone-screen">
+        <div class="blob blob-a" aria-hidden="true"></div>
+        <div class="blob blob-b" aria-hidden="true"></div>
+        <div class="player">
+          <div class="player-top">
+            <button class="ctrl ctrl-round" id="mock-collapse" title="Collapse" aria-label="Collapse player">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M6 14l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="player-eyebrow">Now playing</span>
+            <button class="ctrl ctrl-round" title="Queue" aria-label="Queue">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M4 6h11M4 11h11M4 16h7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="18" cy="15" r="3.4" stroke="currentColor" stroke-width="2"/><path d="M21.4 15v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          <div class="cover-wrap">
+            <div class="cover" id="cover" role="img" aria-label="Album art">
+              <svg viewBox="0 0 24 24" width="46" height="46" fill="none" aria-hidden="true"><path d="M9 18.5V6.8l8-2v10.7" stroke="rgba(59,47,34,.55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.2" cy="18.6" r="2.2" fill="rgba(59,47,34,.55)"/><circle cx="15.2" cy="15.5" r="2.2" fill="rgba(59,47,34,.55)"/></svg>
+            </div>
+          </div>
+
+          <h2 class="song">এখন অনেক রাত</h2>
+          <p class="artist">Anupam Roy</p>
+
+          <div class="seek">
+            <div class="seek-track">
+              <div class="seek-fill" id="seek-fill"></div>
+              <div class="seek-thumb" id="seek-thumb"></div>
+            </div>
+            <div class="seek-times"><span id="time-now">0:00</span><span>3:14</span></div>
+          </div>
+
+          <div class="controls">
+            <button class="ctrl" title="Shuffle" aria-label="Shuffle">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M16 4.5L20 8l-4 3.5M20 8h-4.6c-2.4 0-3.6 1.2-5 3.2l-1.4 2c-1.3 1.8-2.5 2.8-4.4 2.8H2M16 16.5L20 20m0 0l-4-3.5M20 20h-2.6M2 8h2.6c1.9 0 3.1 1 4.4 2.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="ctrl" title="Previous" aria-label="Previous">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none"><path d="M17.5 5.5v13L8 12l9.5-6.5z" fill="currentColor"/><path d="M6.5 5.5v13" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+            </button>
+            <button class="ctrl ctrl-play" id="mock-play" title="Play / pause" aria-label="Play or pause">
+              <svg id="icon-play" viewBox="0 0 24 24" width="30" height="30" fill="none"><path d="M8.5 5.8v12.4c0 .9 1 1.5 1.8 1L20 13c.8-.5.8-1.6 0-2.1L10.3 4.8c-.8-.5-1.8.1-1.8 1z" fill="currentColor"/></svg>
+              <svg id="icon-pause" viewBox="0 0 24 24" width="30" height="30" fill="none" class="hidden"><path d="M8 5.5v13M16 5.5v13" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
+            </button>
+            <button class="ctrl" title="Next" aria-label="Next">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none"><path d="M6.5 5.5v13L16 12 6.5 5.5z" fill="currentColor"/><path d="M17.5 5.5v13" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+            </button>
+            <button class="ctrl" title="Repeat" aria-label="Repeat">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M4 9a4 4 0 014-4h9l-2.6-2.6M20 15a4 4 0 01-4 4H7l2.6 2.6M17 5l-2.6 2.6M7 19l2.6-2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CHIPS: straight from the Discover tab -->
+  <section class="chips-band" aria-label="Discover chips">
+    <p class="chips-lead">Four ways to start listening:</p>
+    <div class="chips">
+      <span class="chip is-active"><i class="chip-dot"></i>Bengali</span>
+      <span class="chip">Hindi</span>
+      <span class="chip">English</span>
+      <span class="chip">Trending</span>
+    </div>
+    <p class="chips-note">Each chip searches official Deezer charts and plays 30‑second previews — marked with a tiny <span class="mini-chip">30s</span> tag, so you always know what you're hearing.</p>
+  </section>
+
+  <!-- FEATURES: icon rows, not cards -->
+  <section class="features" id="features">
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M5 3.5v13m0 0a2.6 2.6 0 105.2 0 2.6 2.6 0 00-5.2 0zM5 8l11-2.6M16 5.4v11.4a2.6 2.6 0 10.02 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <div>
+        <h3>Your library, first</h3>
+        <p>Songs, albums and artists straight from your phone's storage. No account, no upload — nothing ever leaves your device.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/><path d="M14.8 9.2l-1.6 4-4 1.6 1.6-4 4-1.6z" fill="currentColor"/></svg>
+      </span>
+      <div>
+        <h3>Discover online</h3>
+        <p>Bengali, Hindi and English picks from official public APIs with 30‑second previews. No scraping, no shady sources.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M12 20s-7.3-4.4-9.1-9.1C1.7 7.6 3.6 4.5 6.7 4.5c2 0 3.7 1.2 4.5 2.9h1.6c.8-1.7 2.5-2.9 4.5-2.9 3.1 0 5 3.1 3.8 6.4C19.3 15.6 12 20 12 20z" fill="currentColor"/></svg>
+      </span>
+      <div>
+        <h3>Keep what you love</h3>
+        <p>Favorites and your last queue stay on your phone. Stop mid‑song, come back tomorrow — Monora remembers exactly where you left off.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN LANGUAGE -->
+  <section class="design" id="design">
+    <div class="design-copy">
+      <h2>Warm Vanilla Cream</h2>
+      <p>The interface is soft on purpose: two‑layer shadows instead of borders, presses that squish and spring back like icing, and a serif that renders Bangla beautifully. These are the exact colors it's built from.</p>
+    </div>
+    <div class="swatches" aria-label="Color palette">
+      <div class="swatch"><i style="background:#FBF6EA"></i>FBF6EA</div>
+      <div class="swatch"><i style="background:#FFFDF7"></i>FFFDF7</div>
+      <div class="swatch"><i style="background:#F3EBD8"></i>F3EBD8</div>
+      <div class="swatch"><i style="background:#E3B778"></i>E3B778</div>
+      <div class="swatch"><i style="background:#C48A4A"></i>C48A4A</div>
+      <div class="swatch"><i style="background:#3B2F22"></i>3B2F22</div>
+      <div class="swatch"><i style="background:#F2C9B8"></i>F2C9B8</div>
+    </div>
+  </section>
+
+  <!-- FINAL DOWNLOAD -->
+  <section class="dl-band">
+    <h2>Ready in one tap</h2>
+    <a class="btn btn-big" data-download href="https://github.com/explorefaith/Monora/releases/latest/download/monora.apk">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 19.5h15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Download APK
+    </a>
+    <p class="dl-meta">v1.0.0 · <span id="apk-size-2">…</span> · Android 6.0 or newer</p>
+    <p class="dl-check">SHA‑256 <code id="apk-sha">…</code></p>
+  </section>
+
+</main>
+
+<footer>
+  <canvas class="foot-wave" width="180" height="24" aria-hidden="true"></canvas>
+  <p class="foot-line">
+    <span class="brand-name">Monora</span> · an open‑source music player, built with Flutter
+    · <a href="https://github.com/explorefaith/Monora" rel="noopener">source on GitHub</a>
+  </p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
