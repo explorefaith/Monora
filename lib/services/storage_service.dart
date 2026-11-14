@@ -84,6 +84,10 @@ class StorageService {
     );
   }
 
+  String get themeKey => _p.getString('monora.theme.v1') ?? 'vanilla';
+
+  Future<void> saveThemeKey(String key) => _p.setString('monora.theme.v1', key);
+
   bool get batteryHintDismissed =>
       _p.getBool('monora.battery_hint.v1') ?? false;
 

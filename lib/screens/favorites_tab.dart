@@ -6,6 +6,7 @@ import '../core/app_text.dart';
 import '../core/constants.dart';
 import '../player/player_controller.dart';
 import '../widgets/squish_button.dart';
+import '../widgets/theme_picker.dart';
 import '../widgets/track_tile.dart';
 
 class FavoritesTab extends StatelessWidget {
@@ -29,7 +30,17 @@ class FavoritesTab extends StatelessWidget {
                     kPagePadding,
                     Spacing.sm,
                   ),
-                  child: Text('Favorites', style: AppText.display),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text('Favorites', style: AppText.display),
+                      ),
+                      SquishIconButton(
+                        icon: Icons.palette_outlined,
+                        onTap: () => showThemeSheet(context),
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -65,15 +76,15 @@ class FavoritesTab extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(kRadiusCard),
-          boxShadow: kCreamShadows,
+          borderRadius: BorderRadius.circular(Radii.card),
+          boxShadow: creamShadows(),
         ),
         child: Padding(
           padding: const EdgeInsets.all(Spacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.favorite, size: 40, color: AppColors.blush),
+              Icon(Icons.favorite, size: 40, color: AppColors.blush),
               const SizedBox(height: Spacing.lg),
               Text('Songs you love live here', style: AppText.title),
               const SizedBox(height: Spacing.sm),

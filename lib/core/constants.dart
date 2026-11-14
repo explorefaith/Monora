@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'palette.dart';
+
 class Spacing {
   Spacing._();
   static const double xs = 4;
@@ -15,12 +17,25 @@ const double kPagePadding = 20;
 const double kListTileHeight = 72;
 const double kCoverSmall = 56;
 const double kCoverGap = 14;
-const double kRadiusCard = 24;
-const double kRadiusMini = 28;
-const double kRadiusCover = 28;
-const double kRadiusCoverLarge = 32;
 const double kTapTarget = 44;
 const double kPlayButtonSize = 72;
+
+/// Theme-scaled radii — Pixel Party collapses every corner to near-square.
+class Radii {
+  Radii._();
+
+  static double _scaled(double base) =>
+      (base * Palette.current.radiusScale).clamp(0.0, base);
+
+  static double get card => _scaled(24);
+  static double get mini => _scaled(28);
+  static double get cover => _scaled(28);
+  static double get coverLarge => _scaled(32);
+  static double get tileCover => _scaled(16);
+  static double get field => _scaled(16);
+  static double get iconBox => _scaled(19);
+  static double get pill => Palette.current.pixel ? 4 : 999;
+}
 
 const Duration kMicro = Duration(milliseconds: 120);
 const Duration kUi = Duration(milliseconds: 250);

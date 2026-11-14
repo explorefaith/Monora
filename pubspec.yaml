@@ -1,7 +1,7 @@
 name: monora
 description: "Monora — a warm, creamy music player for local + online songs."
 publish_to: 'none'
-version: 1.0.3+4
+version: 1.1.0+5
 
 environment:
   sdk: ^3.14.0
@@ -52,6 +52,10 @@ flutter:
         - asset: assets/fonts/PlusJakartaSans.ttf
         - asset: assets/fonts/PlusJakartaSans-Italic.ttf
           style: italic
+    - family: PixelifySans
+      fonts:
+        - asset: assets/fonts/PixelifySans.ttf
+          weight: 400
     - family: HindSiliguri
       fonts:
         - asset: assets/fonts/HindSiliguri-Regular.ttf

@@ -184,7 +184,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
         decoration: InputDecoration(
           hintText: 'Search any song or artist…',
           hintStyle: AppText.artist,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.search,
             color: AppColors.textSecondary,
             size: 20,
@@ -203,7 +203,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
           fillColor: AppColors.surface,
           contentPadding: const EdgeInsets.symmetric(vertical: Spacing.md),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(Radii.field),
             borderSide: BorderSide.none,
           ),
         ),
@@ -221,7 +221,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
 
   Widget _searchBody() {
     if (_searchLoading) {
-      return ListView(children: const [ShimmerList(itemCount: 8)]);
+      return ListView(children: [ShimmerList(itemCount: 8)]);
     }
     if (_searchError != null) {
       return _stateCard(
@@ -282,8 +282,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: selected ? AppColors.surfaceSunken : AppColors.surface,
-                borderRadius: BorderRadius.circular(999),
-                boxShadow: selected ? kCreamShadowsPressed : kCreamShadows,
+                borderRadius: BorderRadius.circular(Radii.pill),
+                boxShadow: selected ? kCreamShadowsPressed : creamShadows(),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -292,7 +292,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.accentDeep,
                         shape: BoxShape.circle,
                       ),
@@ -320,7 +320,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
   Widget _body() {
     switch (_status) {
       case _Status.loading:
-        return ListView(children: const [ShimmerList(itemCount: 8)]);
+        return ListView(children: [ShimmerList(itemCount: 8)]);
       case _Status.ready:
         return ListView.builder(
           padding: const EdgeInsets.only(top: Spacing.xs, bottom: Spacing.lg),
@@ -367,8 +367,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(kRadiusCard),
-              boxShadow: kCreamShadows,
+              borderRadius: BorderRadius.circular(Radii.card),
+              boxShadow: creamShadows(),
             ),
             child: Padding(
               padding: const EdgeInsets.all(Spacing.xl),

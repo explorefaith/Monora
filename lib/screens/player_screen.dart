@@ -222,18 +222,18 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       height: coverSize,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
-                                          kRadiusCoverLarge,
+                                          Radii.coverLarge,
                                         ),
-                                        boxShadow: kCreamShadowsDeep,
+                                        boxShadow: creamShadows(deep: true),
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(
-                                          kRadiusCoverLarge,
+                                          Radii.coverLarge,
                                         ),
                                         child: CoverArt(
                                           track: track,
                                           size: coverSize,
-                                          radius: kRadiusCoverLarge,
+                                          radius: Radii.coverLarge,
                                         ),
                                       ),
                                     ),
@@ -381,7 +381,7 @@ class _BigPlayButton extends StatelessWidget {
       height: kPlayButtonSize,
       deepShadow: true,
       child: buffering
-          ? const SizedBox(
+          ? SizedBox(
               width: 24,
               height: 24,
               child: CircularProgressIndicator(
@@ -536,7 +536,7 @@ class _QueueSheet extends StatelessWidget {
           initialChildSize: 0.6,
           maxChildSize: 0.92,
           builder: (context, scrollController) => DecoratedBox(
-            decoration: const BoxDecoration(color: AppColors.surface),
+            decoration: BoxDecoration(color: AppColors.surface),
             child: Column(
               children: [
                 Padding(
@@ -573,7 +573,7 @@ class _QueueSheet extends StatelessWidget {
                             stagger: false,
                             onTap: () => controller.jumpTo(i),
                             leading: isCurrent
-                                ? const Icon(
+                                ? Icon(
                                     Icons.graphic_eq,
                                     size: 18,
                                     color: AppColors.accentDeep,
@@ -584,7 +584,7 @@ class _QueueSheet extends StatelessWidget {
                                       fontSize: 12,
                                     ),
                                   ),
-                            trailing: const Icon(
+                            trailing: Icon(
                               Icons.drag_handle,
                               size: 18,
                               color: AppColors.textSecondary,

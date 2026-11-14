@@ -4,24 +4,37 @@ import 'package:flutter/services.dart';
 import '../core/app_colors.dart';
 import '../core/app_text.dart';
 import '../core/constants.dart';
+import '../core/palette.dart';
 
-const List<BoxShadow> kCreamShadows = [
-  BoxShadow(
-    color: AppColors.shadowLight,
-    offset: Offset(-4, -4),
-    blurRadius: 10,
-  ),
-  BoxShadow(color: AppColors.shadowWarm, offset: Offset(6, 6), blurRadius: 16),
-];
-
-const List<BoxShadow> kCreamShadowsDeep = [
-  BoxShadow(
-    color: AppColors.shadowLight,
-    offset: Offset(-6, -6),
-    blurRadius: 14,
-  ),
-  BoxShadow(color: AppColors.shadowWarm, offset: Offset(9, 9), blurRadius: 22),
-];
+List<BoxShadow> creamShadows({bool deep = false}) {
+  final t = Palette.current;
+  if (t.hardShadows) {
+    return [
+      BoxShadow(
+        color: t.shadowLight,
+        offset: deep ? const Offset(-5, -5) : const Offset(-3, -3),
+        blurRadius: 0,
+      ),
+      BoxShadow(
+        color: t.shadowWarm,
+        offset: deep ? const Offset(7, 7) : const Offset(4, 4),
+        blurRadius: 0,
+      ),
+    ];
+  }
+  return [
+    BoxShadow(
+      color: t.shadowLight,
+      offset: deep ? const Offset(-6, -6) : const Offset(-4, -4),
+      blurRadius: deep ? 14 : 10,
+    ),
+    BoxShadow(
+      color: t.shadowWarm,
+      offset: deep ? const Offset(9, 9) : const Offset(6, 6),
+      blurRadius: deep ? 22 : 16,
+    ),
+  ];
+}
 
 const List<BoxShadow> kCreamShadowsPressed = [
   BoxShadow(color: Colors.transparent, offset: Offset(-1, -1), blurRadius: 1),
@@ -35,7 +48,7 @@ class SquishButton extends StatefulWidget {
     this.onTap,
     this.width,
     this.height,
-    this.borderRadius = 999,
+    this.borderRadius,
     this.color,
     this.deepShadow = false,
   });
@@ -44,7 +57,7 @@ class SquishButton extends StatefulWidget {
   final VoidCallback? onTap;
   final double? width;
   final double? height;
-  final double borderRadius;
+  final double? borderRadius;
   final Color? color;
   final bool deepShadow;
 
@@ -107,9 +120,11 @@ class _SquishButtonState extends State<SquishButton>
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Color.lerp(baseColor, AppColors.surfaceSunken, t * 0.7),
-                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderRadius: BorderRadius.circular(
+                  widget.borderRadius ?? Radii.pill,
+                ),
                 boxShadow: BoxShadow.lerpList(
-                  deep ? kCreamShadowsDeep : kCreamShadows,
+                  creamShadows(deep: deep),
                   kCreamShadowsPressed,
                   t,
                 ),

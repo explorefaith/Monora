@@ -135,18 +135,14 @@ class _BatteryHintCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(kRadiusCard),
-        boxShadow: kCreamShadows,
+        borderRadius: BorderRadius.circular(Radii.card),
+        boxShadow: creamShadows(),
       ),
       child: Padding(
         padding: const EdgeInsets.all(Spacing.lg),
         child: Row(
           children: [
-            const Icon(
-              Icons.battery_saver,
-              size: 26,
-              color: AppColors.accentDeep,
-            ),
+            Icon(Icons.battery_saver, size: 26, color: AppColors.accentDeep),
             const SizedBox(width: Spacing.md),
             Expanded(
               child: Column(
@@ -230,7 +226,7 @@ class _PillNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(32),
-        boxShadow: kCreamShadows,
+        boxShadow: creamShadows(),
       ),
       child: Row(
         children: [

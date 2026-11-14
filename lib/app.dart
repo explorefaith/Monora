@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'core/app_theme.dart';
+import 'core/palette.dart';
 import 'player/player_controller.dart';
 import 'screens/splash.dart';
 import 'services/battery_service.dart';
@@ -22,6 +23,11 @@ class MonoraApp extends StatelessWidget {
         Provider<DeezerService>(create: (_) => DeezerService()),
         Provider<BatteryService>(create: (_) => BatteryService()),
         Provider<StorageService>.value(value: storage),
+        ChangeNotifierProvider<PaletteController>(
+          create: (context) => PaletteController(
+            saveTheme: context.read<StorageService>().saveThemeKey,
+          ),
+        ),
         ChangeNotifierProvider<PlayerController>(
           create: (context) => PlayerController(
             storage: context.read<StorageService>(),
@@ -29,11 +35,13 @@ class MonoraApp extends StatelessWidget {
           )..initAudioSession(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Monora',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
-        home: const SplashScreen(),
+      child: Consumer<PaletteController>(
+        builder: (context, palette, _) => MaterialApp(
+          title: 'Monora',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.build(palette.current),
+          home: const SplashScreen(),
+        ),
       ),
     );
   }

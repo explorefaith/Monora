@@ -2,11 +2,13 @@ import 'package:material_ui/material_ui.dart';
 
 import 'app_colors.dart';
 import 'app_text.dart';
+import 'constants.dart';
+import 'palette.dart';
 
 class AppTheme {
   AppTheme._();
 
-  static ThemeData light() {
+  static ThemeData build(ThemeTokens t) {
     final textTheme = TextTheme(
       displayLarge: AppText.display,
       headlineSmall: AppText.title,
@@ -18,25 +20,27 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
-      colorScheme: const ColorScheme.light(
+      brightness: t.dark ? Brightness.dark : Brightness.light,
+      colorScheme: ColorScheme(
+        brightness: t.dark ? Brightness.dark : Brightness.light,
         primary: AppColors.accentDeep,
-        secondary: AppColors.primary,
-        surface: AppColors.surface,
         onPrimary: AppColors.surface,
-        onSurface: AppColors.textPrimary,
-        onSurfaceVariant: AppColors.textSecondary,
+        secondary: AppColors.primary,
+        onSecondary: AppColors.textPrimary,
         error: AppColors.error,
+        onError: AppColors.surface,
+        surface: AppColors.surface,
+        onSurface: AppColors.textPrimary,
+        surfaceContainerHighest: AppColors.surfaceSunken,
+        onSurfaceVariant: AppColors.textSecondary,
+        outline: AppColors.divider,
       ),
       scaffoldBackgroundColor: AppColors.background,
       splashFactory: NoSplash.splashFactory,
       textTheme: textTheme,
-      iconTheme: const IconThemeData(color: AppColors.textPrimary, size: 24),
-      dividerTheme: const DividerThemeData(
-        color: AppColors.divider,
-        thickness: 1,
-      ),
-      appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: AppColors.textPrimary, size: 24),
+      dividerTheme: DividerThemeData(color: AppColors.divider, thickness: 1),
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -59,17 +63,19 @@ class AppTheme {
           fontSize: 14,
         ),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Radii.field),
+        ),
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
+      bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.surface,
         elevation: 0,
         showDragHandle: true,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(Radii.mini)),
         ),
       ),
-      textSelectionTheme: const TextSelectionThemeData(
+      textSelectionTheme: TextSelectionThemeData(
         cursorColor: AppColors.accentDeep,
         selectionColor: AppColors.primary,
         selectionHandleColor: AppColors.accentDeep,

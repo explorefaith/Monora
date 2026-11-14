@@ -105,7 +105,7 @@ class TrackTile extends StatelessWidget {
               ),
               const SizedBox(width: Spacing.xs),
             ],
-            CoverArt(track: track, size: kCoverSmall, radius: 16),
+            CoverArt(track: track, size: kCoverSmall),
             const SizedBox(width: kCoverGap),
             Expanded(
               child: Column(
@@ -154,7 +154,7 @@ class TrackTile extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: BoxDecoration(
       color: AppColors.surfaceSunken,
-      borderRadius: BorderRadius.circular(999),
+      borderRadius: BorderRadius.circular(Radii.pill),
     ),
     child: Text(
       '30s',

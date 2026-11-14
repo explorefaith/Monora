@@ -1,23 +1,28 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'palette.dart';
+
+/// Live palette accessors — every value routes through the active theme
+/// ([Palette.current]), so widgets read the themed color with zero
+/// call-site changes.
 class AppColors {
   AppColors._();
 
-  static const Color background = Color(0xFFFBF6EA);
-  static const Color surface = Color(0xFFFFFDF7);
-  static const Color surfaceSunken = Color(0xFFF3EBD8);
-  static const Color primary = Color(0xFFE3B778);
-  static const Color accentDeep = Color(0xFFC48A4A);
-  static const Color textPrimary = Color(0xFF3B2F22);
-  static const Color textSecondary = Color(0xFF8C7B66);
-  static const Color divider = Color(0xFFEADFC8);
-  static const Color blush = Color(0xFFF2C9B8);
-  static const Color error = Color(0xFFB3564D);
+  static Color get background => Palette.current.background;
+  static Color get surface => Palette.current.surface;
+  static Color get surfaceSunken => Palette.current.surfaceSunken;
+  static Color get primary => Palette.current.primary;
+  static Color get accentDeep => Palette.current.accentDeep;
+  static Color get textPrimary => Palette.current.textPrimary;
+  static Color get textSecondary => Palette.current.textSecondary;
+  static Color get divider => Palette.current.divider;
+  static Color get blush => Palette.current.blush;
+  static Color get error => Palette.current.error;
 
-  static const Color shadowLight = Color(0xFFFFFFFF);
-  static const Color shadowWarm = Color(0x73D9C7A3);
+  static Color get shadowLight => Palette.current.shadowLight;
+  static Color get shadowWarm => Palette.current.shadowWarm;
 
-  static const Color gradientEdge = Color(0xFFF6EEDB);
-  static const Color blobCaramel = Color(0x14E3B778);
-  static const Color blobBlush = Color(0x14F2C9B8);
+  static Color get gradientEdge => Palette.current.gradientEdge;
+  static Color get blobCaramel => Palette.current.blobCaramel;
+  static Color get blobBlush => Palette.current.blobBlush;
 }

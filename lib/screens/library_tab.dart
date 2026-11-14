@@ -14,6 +14,7 @@ import '../player/player_controller.dart';
 import '../services/local_service.dart';
 import '../widgets/shimmer_list.dart';
 import '../widgets/squish_button.dart';
+import '../widgets/theme_picker.dart';
 import '../widgets/track_tile.dart';
 
 enum _PermState { unknown, granted, denied, permanentlyDenied }
@@ -118,7 +119,7 @@ class _LibraryTabState extends State<LibraryTab>
   Widget build(BuildContext context) {
     switch (_perm) {
       case _PermState.unknown:
-        return const Center(
+        return Center(
           child: CircularProgressIndicator(color: AppColors.accentDeep),
         );
       case _PermState.denied:
@@ -138,8 +139,8 @@ class _LibraryTabState extends State<LibraryTab>
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(kRadiusCard),
-              boxShadow: kCreamShadows,
+              borderRadius: BorderRadius.circular(Radii.card),
+              boxShadow: creamShadows(),
             ),
             child: Padding(
               padding: const EdgeInsets.all(Spacing.xl),
@@ -151,9 +152,9 @@ class _LibraryTabState extends State<LibraryTab>
                     height: 72,
                     decoration: BoxDecoration(
                       color: AppColors.surfaceSunken,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(Radii.card),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.library_music,
                       size: 32,
                       color: AppColors.accentDeep,
@@ -200,7 +201,15 @@ class _LibraryTabState extends State<LibraryTab>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Library', style: AppText.display),
+                  Row(
+                    children: [
+                      Expanded(child: Text('Library', style: AppText.display)),
+                      SquishIconButton(
+                        icon: Icons.palette_outlined,
+                        onTap: () => showThemeSheet(context),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: Spacing.lg),
                   _searchBar(),
                   const SizedBox(height: Spacing.md),
@@ -240,16 +249,12 @@ class _LibraryTabState extends State<LibraryTab>
     decoration: InputDecoration(
       hintText: 'Search songs, artists…',
       hintStyle: AppText.artist,
-      prefixIcon: const Icon(
-        Icons.search,
-        color: AppColors.textSecondary,
-        size: 20,
-      ),
+      prefixIcon: Icon(Icons.search, color: AppColors.textSecondary, size: 20),
       filled: true,
       fillColor: AppColors.surface,
       contentPadding: const EdgeInsets.symmetric(vertical: Spacing.md),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Radii.field),
         borderSide: BorderSide.none,
       ),
     ),
@@ -394,7 +399,7 @@ class _EntityCover extends StatelessWidget {
         if (bytes != null && bytes.isNotEmpty) {
           return Image.memory(bytes, fit: BoxFit.cover, gaplessPlayback: true);
         }
-        return const ColoredBox(
+        return ColoredBox(
           color: AppColors.surfaceSunken,
           child: Center(
             child: Icon(Icons.music_note, color: AppColors.accentDeep),
@@ -436,7 +441,7 @@ class _EntityRow extends StatelessWidget {
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(Radii.tileCover),
                 child: SizedBox(
                   width: kCoverSmall,
                   height: kCoverSmall,
@@ -466,7 +471,7 @@ class _EntityRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Spacing.md),
-              const SizedBox(
+              SizedBox(
                 width: kTapTarget,
                 height: kTapTarget,
                 child: Icon(
@@ -497,7 +502,7 @@ class _AlbumCard extends StatelessWidget {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(kRadiusCard),
+              borderRadius: BorderRadius.circular(Radii.card),
               child: _EntityCover(id: album.id, type: ArtworkType.ALBUM),
             ),
           ),

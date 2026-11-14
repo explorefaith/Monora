@@ -16,7 +16,7 @@ class _ShimmerListState extends State<ShimmerList>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1400),
+    duration: Duration(milliseconds: 1400),
   )..repeat();
 
   @override
@@ -39,7 +39,7 @@ class _ShimmerListState extends State<ShimmerList>
           shaderCallback: (bounds) => LinearGradient(
             begin: Alignment(-1.0 - 2 * t, -1.0),
             end: Alignment(1.0 + 2 * t, 1.0),
-            colors: const [
+            colors: [
               AppColors.surfaceSunken,
               AppColors.surface,
               AppColors.surfaceSunken,

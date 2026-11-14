@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../core/app_colors.dart';
+import '../core/constants.dart';
 import '../models/track.dart';
 
 class CoverArt extends StatelessWidget {
@@ -11,7 +12,7 @@ class CoverArt extends StatelessWidget {
 
   final Track? track;
   final double size;
-  final double radius;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class CoverArt extends StatelessWidget {
       }
     }
     return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
+      borderRadius: BorderRadius.circular(radius ?? Radii.tileCover),
       child: inner ?? _fallback(),
     );
   }

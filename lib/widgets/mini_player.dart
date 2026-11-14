@@ -36,8 +36,8 @@ class MiniPlayer extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(kRadiusMini),
-                boxShadow: kCreamShadows,
+                borderRadius: BorderRadius.circular(Radii.mini),
+                boxShadow: creamShadows(),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -49,7 +49,7 @@ class MiniPlayer extends StatelessWidget {
                         const SizedBox(width: Spacing.md),
                         Hero(
                           tag: 'cover-art',
-                          child: CoverArt(track: track, size: 44, radius: 14),
+                          child: CoverArt(track: track, size: 44),
                         ),
                         const SizedBox(width: Spacing.md),
                         Expanded(
@@ -160,7 +160,7 @@ Widget _playPause(PlayerController controller, Track track) {
         width: kTapTarget,
         height: kTapTarget,
         child: loading
-            ? const SizedBox(
+            ? SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(
